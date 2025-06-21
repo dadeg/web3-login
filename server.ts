@@ -63,23 +63,8 @@ app.get(`/login-secret`, async function (req, res){
 
 app.get(`/auth-info`, async function (req, res){
   const address = authenticateTokenForWebsockets(req);
-  const alreadyPaid = authenticatePaid(req);
-
-  let paid = false;
-  if (address) {
-    paid = await userPaid(address);
-  }
-
-  if (paid && !alreadyPaid) {
-    res.cookie('paid', paid, {
-      httpOnly: true,
-      secure: false,  // Only send the cookie over HTTPS, set to true for https
-      sameSite: false, // Prevent Cross-Site Request Forgery
-      maxAge: 2592000000 // Cookie's expiration time in milliseconds (30 days)
-    });
-  }
-
-  res.send({address, paid });
+  
+  res.send({address });
 });
 
 app.get(`/logout`, async function (req, res){
